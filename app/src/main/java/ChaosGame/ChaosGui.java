@@ -20,6 +20,7 @@ public class ChaosGui extends JFrame implements ActionListener {
   private GamePanel gamePanel;
   private JButton startButton;
   private int iterations;
+  private double rotations, skew;
   private static int panelX = 500, panelY = 500;
 
   public ChaosGui() {
@@ -47,8 +48,10 @@ public class ChaosGui extends JFrame implements ActionListener {
 
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == startButton) {
+      iterations = Integer.parseInt(optionsPanel.fieldIterations.getText());
+      rotations = Double.parseDouble(optionsPanel.fieldRotation.getText());
+      skew = Double.parseDouble(optionsPanel.fieldSkew.getText());
       shape = new ChaosShape(optionsPanel.selectedSides, panelX / 2, new Point(panelX / 2, panelY / 2));
-      iterations = optionsPanel.selectedIterations;
       gamePanel.paintShape(shape, iterations, p -> shape.getRandomCorner(), optionsPanel.btnPressed);
 
     }

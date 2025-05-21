@@ -42,6 +42,7 @@ public class GamePanel extends JPanel {
       for (int i = 0; i < iterations; i++) {
         pointList[i] = shape.getNextPoint(currentPoint, rule);
         g.drawLine(pointList[i].x, pointList[i].y, pointList[i].x, pointList[i].y);
+        currentPoint = pointList[i];
 
       }
 

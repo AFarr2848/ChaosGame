@@ -12,11 +12,10 @@ public class OptionsPanel extends JPanel implements ActionListener {
   private JComboBox<String> menuPolygon;
   private JComboBox<String> menuRule;
   private JComboBox<String> menuColor;
-  private JTextField fieldIterations, fieldRotation, fieldSkew;
+  public JTextField fieldIterations, fieldRotation, fieldSkew;
   private JRadioButton btnShape;
   public String selectedRule, selectedColor;
-  public int selectedIterations, selectedSides = 3;
-  public double selectedRotation, selectedSkew;
+  public int selectedSides = 3;
   public boolean btnPressed = true;
   private NumberFormatter formatterInt, formatterDouble;
 
@@ -25,18 +24,18 @@ public class OptionsPanel extends JPanel implements ActionListener {
     setBorder(BorderFactory.createTitledBorder("Settings"));
 
     // I looked this up
-    formatterInt = new NumberFormatter(new DecimalFormat("0.0"));
+    formatterInt = new NumberFormatter(new DecimalFormat("0"));
     formatterInt.setMinimum(0);
     formatterInt.setAllowsInvalid(false);
     formatterInt.setCommitsOnValidEdit(true);
-    formatterDouble = new NumberFormatter(new DecimalFormat("0"));
+    formatterDouble = new NumberFormatter(new DecimalFormat("0.0"));
     formatterDouble.setMinimum(0);
     formatterDouble.setAllowsInvalid(false);
     formatterDouble.setCommitsOnValidEdit(true);
 
     String[] optsPolygon = { "Triangle", "Square", "Pentagon", "Hexagon" };
     String[] optsRule = { "temp", "temp", "temp", "temp" };
-    String[] optsColor = { "temp", "temp", "temp", "temp" };
+    String[] optsColor = { "By vertex", "Custom" };
 
     menuPolygon = new JComboBox<>(optsPolygon);
     menuRule = new JComboBox<>(optsRule);
@@ -45,6 +44,10 @@ public class OptionsPanel extends JPanel implements ActionListener {
     fieldIterations = new JFormattedTextField(formatterInt);
     fieldRotation = new JFormattedTextField(formatterDouble);
     fieldSkew = new JFormattedTextField(formatterDouble);
+
+    fieldIterations.setText("0");
+    fieldRotation.setText("0.0");
+    fieldSkew.setText("0.0");
 
     btnShape = new JRadioButton("Draw Polygon");
     btnShape.setSelected(true);
@@ -83,12 +86,6 @@ public class OptionsPanel extends JPanel implements ActionListener {
       selectedRule = (String) menuRule.getSelectedItem();
     if (e.getSource() == menuColor)
       selectedColor = (String) menuColor.getSelectedItem();
-
-    if (e.getSource().getClass() == JTextField.class) {
-      selectedRotation = Double.parseDouble(fieldRotation.getText());
-      selectedSkew = Double.parseDouble(fieldSkew.getText());
-      selectedIterations = Integer.parseInt(fieldIterations.getText());
-    }
 
     if (e.getSource() == btnShape)
       btnPressed = btnShape.isSelected();
