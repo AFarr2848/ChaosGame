@@ -1,11 +1,24 @@
 package ChaosGame;
+/*
+ * Aaron Farrar
+ * APCSA Pd 1
+ * Chaos Game
+ */
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
 public class OptionsPanel extends JPanel implements ActionListener {
@@ -16,7 +29,8 @@ public class OptionsPanel extends JPanel implements ActionListener {
   private JRadioButton btnShape;
   public String selectedRule, selectedColor;
   public int selectedSides = 3;
-  public boolean btnPressed = true;
+  public boolean btnPressed = true, customColor = false;
+  public Color colorChosen;
   private NumberFormatter formatterInt, formatterDouble;
 
   public OptionsPanel() {
@@ -84,11 +98,19 @@ public class OptionsPanel extends JPanel implements ActionListener {
     }
     if (e.getSource() == menuRule)
       selectedRule = (String) menuRule.getSelectedItem();
-    if (e.getSource() == menuColor)
+    if (e.getSource() == menuColor) {
       selectedColor = (String) menuColor.getSelectedItem();
+      if (menuColor.getSelectedItem().equals((Object) "Custom")) {
+        colorChosen = JColorChooser.showDialog(this, "Choose a color", Color.RED);
+        customColor = true;
+      } else
+        customColor = false;
+
+    }
 
     if (e.getSource() == btnShape)
       btnPressed = btnShape.isSelected();
+
   }
 
 }
