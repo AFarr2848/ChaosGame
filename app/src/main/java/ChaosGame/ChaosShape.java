@@ -8,9 +8,6 @@ package ChaosGame;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -19,13 +16,10 @@ import java.util.function.Function;
  *
  */
 public class ChaosShape {
-  private int shapeSides;
   public Polygon polygon;
   private int radius;
   private Point center;
   private Color[] colorList;
-
-  private Map<Point, Integer> opacityMap;
 
   /**
    * Generates a new regular shape
@@ -34,12 +28,10 @@ public class ChaosShape {
    * @param radius THe radius of the new shape
    * @param center The center point of the new shape
    */
-  public ChaosShape(int sides, int radius, Point center) {
+  public ChaosShape(int sides, int radius, Point center, double skew) {
     Random r = new Random();
-    shapeSides = sides;
     this.radius = radius;
     this.center = center;
-    opacityMap = new HashMap<>();
 
     colorList = new Color[sides];
     for (int i = 0; i < sides; i++) {
@@ -51,6 +43,13 @@ public class ChaosShape {
     for (int i = 0; i < sides; i++) {
       xPoints[i] = center.x + (int) (radius * Math.sin((double) i / sides * 2 * Math.PI));
       yPoints[i] = center.y + (int) (radius * Math.cos((double) i / sides * 2 * Math.PI));
+      if (skew < 1) {
+        xPoints[i] *= skew;
+
+      }
+      if (skew > 1) {
+        yPoints[i] *= -skew + 2;
+      }
     }
     polygon = new Polygon(xPoints, yPoints, sides);
   }
@@ -120,7 +119,6 @@ public class ChaosShape {
       if (distList[i] < minDist)
         minDist = distList[i];
     }
-
     int r = 0;
     Random rand = new Random();
     for (int i = 0; i < 1000; i++) {
@@ -129,7 +127,6 @@ public class ChaosShape {
         return new Point(polygon.xpoints[r], polygon.ypoints[r]);
     }
     return new Point(polygon.xpoints[r], polygon.ypoints[r]);
-
   }
 
   /**
@@ -146,7 +143,6 @@ public class ChaosShape {
       if (distList[i] > maxDist)
         maxDist = distList[i];
     }
-
     int r = 0;
     Random rand = new Random();
     for (int i = 0; i < 1000; i++) {

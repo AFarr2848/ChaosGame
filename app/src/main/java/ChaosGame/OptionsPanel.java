@@ -22,6 +22,10 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
+/**
+ * The options panel for ChaosGUI
+ *
+ */
 public class OptionsPanel extends JPanel implements ActionListener {
   private JComboBox<String> menuPolygon;
   private JComboBox<String> menuRule;
@@ -32,7 +36,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
   public int selectedSides = 3;
   public boolean btnPressed = true, customColor = false;
   public Color colorChosen;
-  private NumberFormatter formatterInt, formatterDouble;
+  private NumberFormatter formatterInt;
   public JSlider sliderRotation, sliderSkew;
 
   public OptionsPanel() {
@@ -55,12 +59,13 @@ public class OptionsPanel extends JPanel implements ActionListener {
 
     fieldIterations = new JFormattedTextField(formatterInt);
 
-    sliderRotation = new JSlider(0, 360, 0);
-    sliderSkew = new JSlider(0, 200, 100);
+    sliderRotation = new JSlider(0, 45, 0);
+    sliderSkew = new JSlider(1, 199, 100);
 
     sliderRotation.setPaintTicks(true);
     sliderRotation.setMajorTickSpacing(45);
     sliderRotation.setMinorTickSpacing(15);
+    sliderSkew.setPaintTicks(true);
 
     fieldIterations.setText("100000");
 
@@ -88,6 +93,18 @@ public class OptionsPanel extends JPanel implements ActionListener {
     add(new JLabel("Skew"));
     add(sliderSkew);
     add(btnShape);
+
+    // For empty space
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
+    add(new JLabel());
   }
 
   public int getRotation() {
@@ -95,7 +112,7 @@ public class OptionsPanel extends JPanel implements ActionListener {
   }
 
   public double getSkew() {
-    return sliderSkew.getValue();
+    return sliderSkew.getValue() / 100.0;
   }
 
   @Override

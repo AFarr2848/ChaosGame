@@ -23,7 +23,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 /**
  * The main GUI frame
@@ -35,7 +34,7 @@ public class ChaosGui extends JFrame implements ActionListener {
   private JButton startButton;
   private Color color;
   private int iterations;
-  private double rotations, skew;
+  private double rotations, skew = 1;
   private JMenuBar menuBar;
   private JMenu menuFile, menuHelp;
   private JMenuItem itemReset, itemSave, itemExit, itemAbout;
@@ -48,7 +47,7 @@ public class ChaosGui extends JFrame implements ActionListener {
 
     optionsPanel = new OptionsPanel();
     gamePanel = new GamePanel(panelX, panelY);
-    shape = new ChaosShape(3, panelX / 2, new Point(panelX / 2, panelY / 2));
+    shape = new ChaosShape(3, panelX / 2, new Point(panelX / 2, panelY / 2), skew);
     startButton = new JButton("Run");
 
     startButton.addActionListener(this);
@@ -88,7 +87,7 @@ public class ChaosGui extends JFrame implements ActionListener {
 
   private void saveFile() {
     try {
-      Rectangle screenRect = new Rectangle(this.getBounds());
+      Rectangle screenRect = new Rectangle(gamePanel.getBounds());
       BufferedImage capture = new Robot().createScreenCapture(screenRect);
       JFileChooser fileChooser = new JFileChooser();
       if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -109,9 +108,9 @@ public class ChaosGui extends JFrame implements ActionListener {
     if (e.getSource() == startButton) {
       iterations = Integer.parseInt(optionsPanel.fieldIterations.getText());
       rotations = optionsPanel.getRotation();
-      System.out.println(rotations);
       skew = optionsPanel.getSkew();
-      shape = new ChaosShape(optionsPanel.selectedSides, panelX / 2, new Point(panelX / 2, panelY / 2));
+      System.out.println(skew);
+      shape = new ChaosShape(optionsPanel.selectedSides, panelX / 2, new Point(panelX / 2, panelY / 2), skew);
       color = optionsPanel.colorChosen;
       String selectedRule = optionsPanel.selectedRule;
       Function<Point, Point> func = p -> shape.getRandomCorner();
