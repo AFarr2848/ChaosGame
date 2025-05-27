@@ -20,9 +20,10 @@ public class GamePanel extends JPanel {
   private boolean drawPolygon;
   private boolean customColor;
   private Color color;
+  private double rotation;
 
-  public GamePanel() {
-    setPreferredSize(new Dimension(500, 500));
+  public GamePanel(int width, int height) {
+    setPreferredSize(new Dimension(width, height));
     setBackground(Color.BLACK);
     repaint();
     setVisible(true);
@@ -35,13 +36,18 @@ public class GamePanel extends JPanel {
    * @param iterations  The number of points to paint
    * @param rule        The method to choose each painted Point
    * @param drawPolygon Whether to draw the outer shape of ChaosShape
+   * @param rotation    The rotation in degrees to turn the resultant points
+   *                    around their vertecies
    */
-  public void paintShape(ChaosShape shape, int iterations, Function<Point, Point> rule, boolean drawPolygon) {
+  public void paintShape(ChaosShape shape, int iterations, Function<Point, Point> rule, boolean drawPolygon,
+      double rotation) {
     this.shape = shape;
     this.iterations = iterations;
     this.rule = rule;
     this.drawPolygon = drawPolygon;
     this.customColor = false;
+    this.rotation = rotation;
+
     repaint();
   }
 
@@ -53,15 +59,18 @@ public class GamePanel extends JPanel {
    * @param rule        The method to choose each painted Point
    * @param drawPolygon Whether to draw the outer shape of ChaosShape
    * @param color       The color to draw the points in
+   * @param rotation    The rotation in degrees to turn the resultant points
+   *                    around their vertecies
    */
   public void paintShape(ChaosShape shape, int iterations, Function<Point, Point> rule, boolean drawPolygon,
-      Color color) {
+      Color color, double rotation) {
     this.shape = shape;
     this.iterations = iterations;
     this.rule = rule;
     this.drawPolygon = drawPolygon;
     this.color = color;
     this.customColor = true;
+    this.rotation = rotation;
     repaint();
   }
 
@@ -72,12 +81,12 @@ public class GamePanel extends JPanel {
       g.drawPolygon(shape.polygon);
     if (iterations > 0) {
       Point currentPoint = shape.getRandomInside();
-      ChaosShape.ColorPoint[] pointList = new ChaosShape.ColorPoint[iterations];
+      Point[] pointList = new Point[iterations];
 
       for (int i = 0; i < iterations; i++) {
-        pointList[i] = shape.getNextColorPoint(currentPoint, rule);
+        pointList[i] = shape.getNextPoint(currentPoint, rule, rotation);
         if (!customColor)
-          g.setColor(pointList[i].color);
+          g.setColor(shape.getPointColor(pointList[i]));
         else
           g.setColor(color);
         g.drawLine(pointList[i].x, pointList[i].y, pointList[i].x, pointList[i].y);

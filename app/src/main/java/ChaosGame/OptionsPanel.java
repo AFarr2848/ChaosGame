@@ -18,6 +18,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
@@ -25,13 +26,14 @@ public class OptionsPanel extends JPanel implements ActionListener {
   private JComboBox<String> menuPolygon;
   private JComboBox<String> menuRule;
   private JComboBox<String> menuColor;
-  public JTextField fieldIterations, fieldRotation, fieldSkew;
+  public JTextField fieldIterations;
   private JRadioButton btnShape;
-  public String selectedRule, selectedColor;
+  public String selectedRule = "Random vertex", selectedColor;
   public int selectedSides = 3;
   public boolean btnPressed = true, customColor = false;
   public Color colorChosen;
   private NumberFormatter formatterInt, formatterDouble;
+  public JSlider sliderRotation, sliderSkew;
 
   public OptionsPanel() {
     setLayout(new GridLayout(0, 2));
@@ -42,26 +44,25 @@ public class OptionsPanel extends JPanel implements ActionListener {
     formatterInt.setMinimum(0);
     formatterInt.setAllowsInvalid(false);
     formatterInt.setCommitsOnValidEdit(true);
-    formatterDouble = new NumberFormatter(new DecimalFormat("0.0"));
-    formatterDouble.setMinimum(0);
-    formatterDouble.setAllowsInvalid(false);
-    formatterDouble.setCommitsOnValidEdit(true);
 
     String[] optsPolygon = { "Triangle", "Square", "Pentagon", "Hexagon" };
-    String[] optsRule = { "temp", "temp", "temp", "temp" };
-    String[] optsColor = { "By vertex", "Custom" };
+    String[] optsRule = { "Random vertex", "Not closest", "Not furthest" };
+    String[] optsColor = { "By point", "Custom" };
 
     menuPolygon = new JComboBox<>(optsPolygon);
     menuRule = new JComboBox<>(optsRule);
     menuColor = new JComboBox<>(optsColor);
 
     fieldIterations = new JFormattedTextField(formatterInt);
-    fieldRotation = new JFormattedTextField(formatterDouble);
-    fieldSkew = new JFormattedTextField(formatterDouble);
 
-    fieldIterations.setText("0");
-    fieldRotation.setText("0.0");
-    fieldSkew.setText("0.0");
+    sliderRotation = new JSlider(0, 360, 0);
+    sliderSkew = new JSlider(0, 200, 100);
+
+    sliderRotation.setPaintTicks(true);
+    sliderRotation.setMajorTickSpacing(45);
+    sliderRotation.setMinorTickSpacing(15);
+
+    fieldIterations.setText("100000");
 
     btnShape = new JRadioButton("Draw Polygon");
     btnShape.setSelected(true);
@@ -71,8 +72,6 @@ public class OptionsPanel extends JPanel implements ActionListener {
     menuColor.addActionListener(this);
 
     fieldIterations.addActionListener(this);
-    fieldRotation.addActionListener(this);
-    fieldSkew.addActionListener(this);
 
     btnShape.addActionListener(this);
 
@@ -85,10 +84,18 @@ public class OptionsPanel extends JPanel implements ActionListener {
     add(new JLabel("Iterations"));
     add(fieldIterations);
     add(new JLabel("Rotation"));
-    add(fieldRotation);
+    add(sliderRotation);
     add(new JLabel("Skew"));
-    add(fieldSkew);
+    add(sliderSkew);
     add(btnShape);
+  }
+
+  public int getRotation() {
+    return sliderRotation.getValue();
+  }
+
+  public double getSkew() {
+    return sliderSkew.getValue();
   }
 
   @Override
