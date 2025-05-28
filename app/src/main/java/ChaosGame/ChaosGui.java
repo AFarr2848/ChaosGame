@@ -13,6 +13,7 @@ import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.function.Function;
 
 import javax.imageio.ImageIO;
@@ -91,7 +92,10 @@ public class ChaosGui extends JFrame implements ActionListener {
       BufferedImage capture = new Robot().createScreenCapture(screenRect);
       JFileChooser fileChooser = new JFileChooser();
       if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-        ImageIO.write(capture, "png", fileChooser.getSelectedFile());
+        String path = fileChooser.getSelectedFile().getAbsolutePath();
+        if (!path.substring(path.length() - 4).equals(".png"))
+          path += ".png";
+        ImageIO.write(capture, "png", new File(path));
       }
     } catch (Exception ex) {
       System.err.println(ex);
@@ -134,7 +138,7 @@ public class ChaosGui extends JFrame implements ActionListener {
       if (optionsPanel.customColor)
         gamePanel.paintShape(shape, iterations, func, optionsPanel.btnPressed, color, rotations);
       else
-        gamePanel.paintShape(shape, iterations, func, optionsPanel.btnPressed, rotations);
+        gamePanel.paintShape(shape, iterations, func, optionsPanel.btnPressed, null, rotations);
     }
 
     // Menu Items

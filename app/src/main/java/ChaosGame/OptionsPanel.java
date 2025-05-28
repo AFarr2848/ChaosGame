@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JColorChooser;
@@ -38,6 +39,8 @@ public class OptionsPanel extends JPanel implements ActionListener {
   public Color colorChosen;
   private NumberFormatter formatterInt;
   public JSlider sliderRotation, sliderSkew;
+  private Hashtable<Integer, JLabel> rotationLabels;
+  private Hashtable<Integer, JLabel> skewLabels;
 
   public OptionsPanel() {
     setLayout(new GridLayout(0, 2));
@@ -62,9 +65,26 @@ public class OptionsPanel extends JPanel implements ActionListener {
     sliderRotation = new JSlider(0, 45, 0);
     sliderSkew = new JSlider(1, 199, 100);
 
+    rotationLabels = new Hashtable<>();
+    skewLabels = new Hashtable<>();
+
+    rotationLabels.put(0, new JLabel("0"));
+    rotationLabels.put(15, new JLabel("15"));
+    rotationLabels.put(30, new JLabel("30"));
+    rotationLabels.put(45, new JLabel("45"));
+
+    skewLabels.put(1, new JLabel("0"));
+    skewLabels.put(100, new JLabel("1"));
+    skewLabels.put(199, new JLabel("2"));
+
+    sliderRotation.setLabelTable(rotationLabels);
+    sliderSkew.setLabelTable(skewLabels);
+    sliderRotation.setPaintLabels(true);
+    sliderSkew.setPaintLabels(true);
+
     sliderRotation.setPaintTicks(true);
-    sliderRotation.setMajorTickSpacing(45);
-    sliderRotation.setMinorTickSpacing(15);
+    sliderRotation.setMajorTickSpacing(15);
+    sliderRotation.setMinorTickSpacing(5);
     sliderSkew.setPaintTicks(true);
 
     fieldIterations.setText("100000");
