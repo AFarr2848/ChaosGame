@@ -113,7 +113,6 @@ public class ChaosGui extends JFrame implements ActionListener {
       iterations = Integer.parseInt(optionsPanel.fieldIterations.getText());
       rotations = optionsPanel.getRotation();
       skew = optionsPanel.getSkew();
-      System.out.println(skew);
       shape = new ChaosShape(optionsPanel.selectedSides, panelX / 2, new Point(panelX / 2, panelY / 2), skew);
       color = optionsPanel.colorChosen;
       String selectedRule = optionsPanel.selectedRule;
